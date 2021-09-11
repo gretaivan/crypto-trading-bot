@@ -1,4 +1,5 @@
-# Crypto Currency Trading Bot in Python (Windows desktop app)
+# Crypto Currency Trading Bot in Python 
+Windows desktop app
 
 ## App Planning
 
