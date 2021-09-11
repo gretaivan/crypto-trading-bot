@@ -1,11 +1,23 @@
 # Crypto Currency Trading Bot in Python (Windows desktop app)
 
-## Requirements
-### Interface
+## App Planning
+
+### Requirements
+#### Interface
 - [ ] Display market data (decision helper)
 - [ ] Display messages to the user (loggin)
 - [ ] Set up a strategy and start/stop it
-- [ ] Follow the orders/trades (PNL, order status...)
+- [ ] Follow the orders/trades (PNL, order status...)  
+*(4 components)*
+
+###### Interface design version 1.0
+![image](https://user-images.githubusercontent.com/47504179/132955706-689fcb33-f217-4981-b26a-c453a8cf3f54.png)
+
+#### Conenctivity (APIs) 
+- [ ] Binance futures API 
+- [ ] Bitmex API
+- [ ] Authentication to both APIs  
+*(2 connectors)*
 
 
 
