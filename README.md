@@ -2,7 +2,14 @@
 Windows desktop app
 
 ## Tools
-+ Python 3 
++ Python 3.7
++ numpy-1.21.2 
++ pandas-1.3.3
++ python-dateutil-2.8.2 
++ pytz-2021.1 six-1.16
+
+## Installation & Usage
++ pip intall pandas
 
 ## App Planning
 
