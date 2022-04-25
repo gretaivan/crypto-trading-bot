@@ -1,0 +1,4 @@
+2021-09-17 18:27:11,934 INFO :: the log that shows basic information
+2021-09-17 18:27:11,934 WARNING :: the log that indicates warning
+2021-09-17 18:27:11,935 ERROR :: the log that indicates error
+2021-09-17 18:27:11,935 INFO :: Hello from Binance connector
