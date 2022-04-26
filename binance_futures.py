@@ -14,11 +14,9 @@ def get_contracts():
   #print(response_object.status_code, response_object.json())
   #pprint.pprint(response_object.json()['symbols'])
   """ AVAILABLE CURRENCY PAIRS """
+  contracts = []
   for contract in response_object.json()['symbols']:
-    contracts = []
-    pprint.pprint(contract['pair'])
+    #pprint.pprint(contract['pair'])
     contracts.append(contract['pair'])
   
   return contracts
-
-print(get_contracts())
