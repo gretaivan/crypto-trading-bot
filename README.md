@@ -1,6 +1,6 @@
 # Crypto Currency Trading Bot in Python
 
-Windows desktop app for crypto portfolio management - using REST API and live data streams. User can place, cancel order, get status and balance of the their account and see live market data.
+Windows desktop app for crypto portfolio management - using REST API and live data streams. User can place, cancel order, overview status and balance of the their account and see live market data.
 
 ## Tools
 
@@ -12,10 +12,17 @@ Windows desktop app for crypto portfolio management - using REST API and live da
 
 ## Installation & Usage
 
+### Installation
+
 - `pipenv --python 3.7.9` - to setup project with required python version
 - `pipenv shell` - enter virtual env
 - `pipenv install pandas numpy python-dateutil pytz requests --dev` - install required dependencies
 - `pipenv requirements --dev > requirements.txt` - generate the requirement list
+
+### Usage
+
+- `pipenv shell` - enter VE
+- `python main.py` - to run application
 
 ## App Planning
 
