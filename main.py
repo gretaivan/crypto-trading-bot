@@ -2,8 +2,8 @@ import time
 import pandas as pd
 import tkinter as tk
 import logging
-from bitmex import get_contracts as get_bitmex_contracts
-
+from connectors.bitmex import get_contracts as get_bitmex_contracts
+from connectors.binance_futures import BinanceFutures
 
 
 #unix timestamp since 1970
@@ -45,11 +45,16 @@ def place_currency_pair_labels(contracts, rows_per_column):
 if __name__ == '__main__':
 
     bitmex_contracts = get_bitmex_contracts()
+
+    binance = BinanceFutures(True)
+    print(binance.get_historical_candles("BTCUSDT", "1h"))
+
     root = tk.Tk()
     root.configure(bg="gray12") #set background color
 
+    #bitmex simple version
     place_currency_pair_labels(bitmex_contracts, 5)
     
-   
+    #binance 
 
     root.mainloop()

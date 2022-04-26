@@ -24,14 +24,14 @@ class BinanceFutures:
 		if testnet: 
 			self.base_url = "https://testnet.binancefuture.com"
 		else: 
-			self.base_url = "https://fapi.binance.com
+			self.base_url = "https://fapi.binance.com"
 
-			self.prices = dict()
+		self.prices = dict()
 
 		logger.info("Binances Futures Client successfully initialized")
 
 	def make_request(self, method, endpoint, data):
-		if method == "GET":
+		if method == "GET": 
 			res = requests.get(self.base_url + endpoint, params=data)
 		else: 
 			raise ValueError()
@@ -44,7 +44,7 @@ class BinanceFutures:
 			return None
 
 	def get_contracts(self): 
-		exchange_info = self.make_request("GET", "fapi/v1/exchangeInfo", None)
+		exchange_info = self.make_request("GET", "/fapi/v1/exchangeInfo", None)
 
 		contracts_dictionary = dict()
 
@@ -55,7 +55,7 @@ class BinanceFutures:
 		return contracts_dictionary
 	
 	def get_historical_candles(self, symbol, interval): 
-		endpoint = "fapi/v1/klines"
+		endpoint = "/fapi/v1/klines"
 		data = dict()
 		data['symbol'] = symbol
 		data['interval']  = interval
@@ -76,14 +76,14 @@ class BinanceFutures:
 		return candles
 
 	def get_bid_ask(self, symbol): 
-		endpoint = "fapi/v1/ticker/bookTicker"
+		endpoint = "/fapi/v1/ticker/bookTicker"
 		data = dict()
 		data['symbol'] = symbol
 		ob_data = self.make_request("GET", endpoint, data)
 
 		if ob_data is not None: 
-			is symbol not in self.prices: 
-				self.prices[symbol] = {'bid': float(ob_data['bidPrice']), 'ask': float(on_data['askPrice'])}
+			if symbol not in self.prices: 
+				self.prices[symbol] = {'bid': float(ob_data['bidPrice']), 'ask': float(ob_data['askPrice'])}
 			else: 
 				seld.prices[symbol]['bid'] = float(ob_data['bidPrice'])
 				seld.prices[symbol]['ask'] = float(ob_data['askPrice'])
