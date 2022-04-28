@@ -1,6 +1,6 @@
 # Crypto Currency Trading Bot in Python
 
-Windows desktop app for crypto portfolio management - using REST API and live data streams. User can place, cancel order, overview status and balance of the their account and see live market data.
+Windows desktop app for crypto portfolio management - using REST API and live data streams. User can place, cancel order, overview status and balance of the their account and see live market data. It is a multithreaded application
 
 ## Tools
 
@@ -9,6 +9,11 @@ Windows desktop app for crypto portfolio management - using REST API and live da
 - pandas-1.3.3
 - python-dateutil-2.8.2
 - pytz-2021.1 six-1.16
+- numpy
+- python-dateutil
+- python-dotenv
+- requests
+- websocket-client v0.58.0
 
 ## Installation & Usage
 
@@ -42,7 +47,7 @@ Windows desktop app for crypto portfolio management - using REST API and live da
 
 #### 2. Connectivity (APIs)
 
-- [ ] Binance futures API
+- [x] Binance futures API
 - [ ] Bitmex API
 - [ ] Authentication to both APIs  
        Using 2 types of connections REST API and web socket API
@@ -55,6 +60,11 @@ Windows desktop app for crypto portfolio management - using REST API and live da
 - [ ] Define a logic for each strategy (entry and exit)
 - [ ] Manage orders / positions
       _(Strategy class)_
+
+#### 4. Other
+
+- [x] Multi-threading: to enable live data updates in paraller to user interactions
+- [ ] Logger to log actions in the dedicated file
 
 ### Desktop vs Web App
 
