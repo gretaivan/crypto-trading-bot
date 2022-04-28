@@ -56,6 +56,9 @@ if __name__ == '__main__':
     # print(binance.place_order("BTCUSDT", "BUY", 0.01, "LIMIT", 20000, "GTC")) # good till cancelled
     # print(binance.get_order_status("BTCUSDT", 3036361555))
     # print(binance.cancel_order("BTCUSDT", 3036361555))
+
+    # streams of data
+    candles = BinanceFutures.get_historical_candles()
     
 
     root = tk.Tk()
