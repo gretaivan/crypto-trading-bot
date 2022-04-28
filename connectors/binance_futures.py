@@ -1,3 +1,4 @@
+from ast import Or
 from concurrent.futures import thread
 import logging
 import re
@@ -102,7 +103,7 @@ class BinanceFutures:
 
 		return candles
 
-	def get_bid_ask(self, contract: Contract): 
+	def get_bid_ask(self, contract: Contract) -> typing.Dict[str, float]: 
 		endpoint = "/fapi/v1/ticker/bookTicker"
 		data = dict()
 		data['symbol'] = contract.symbol
@@ -117,7 +118,7 @@ class BinanceFutures:
 
 			return self.prices[contract.symbol]
 
-	def get_balances(self): 
+	def get_balances(self) -> typing.Dict[str, Balance]: 
 		data = dict()
 		data['timestamp'] = int(time.time() * 1000)  #API requires ms as int
 		data['signature']  = self.generate_signature(data)
@@ -169,7 +170,7 @@ class BinanceFutures:
 
 		return order_status
 
-	def get_order_status(self, contract: Contract, order_id: int): 
+	def get_order_status(self, contract: Contract, order_id: int) -> OrderStatus: 
 		data = dict()
 		data['symbol'] = contract.symbol 
 		data['orderId'] = order_id
