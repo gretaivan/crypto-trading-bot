@@ -1,9 +1,5 @@
-from ast import Or
-from concurrent.futures import thread
 import logging
-import re
 import requests
-import pprint
 import time
 import hmac
 import hashlib
@@ -13,17 +9,14 @@ import threading
 import json
 import typing
 
-import models.balance as Balance
-import models.candle as Candle
-import models.contract as Contract
-import models.order_status as OrderStatus
+from models import *
 
 logger = logging.getLogger()
 
 
 class BinanceFutures:
     def __init__(self, public_key: str, secret_key: str,
-                 testnet: bool):  # self is a class constructor to initialise self when called and testnet whic api to use
+                 testnet: bool):  # self is a class constructor to initialise self when called and testnet which api to use
         if testnet:
             self._base_url = "https://testnet.binancefuture.com"
             self._wss_url = "wss://stream.binance.com/ws"
@@ -42,7 +35,7 @@ class BinanceFutures:
         self._ws_id = 1
         self._ws = None
 
-        # as this is a websocket function and it runs continuosly it requires its own thread to run in parallel
+        # as this is a websocket function and it runs continously it requires its own thread to run in parallel
         t = threading.Thread(target=self._start_ws)
         t.start()
 

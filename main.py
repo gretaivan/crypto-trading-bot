@@ -58,7 +58,7 @@ if __name__ == '__main__':
     # print(binance.cancel_order("BTCUSDT", 3036361555))
 
     # streams of data
-    candles = BinanceFutures.get_historical_candles()
+    #candles = BinanceFutures.get_historical_candles()
     
 
     root = tk.Tk()

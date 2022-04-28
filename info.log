@@ -49,3 +49,9 @@
 2022-04-28 16:37:01,655 INFO :: Binance Websocket: {"result":null,"id":1}
 2022-04-28 16:37:01,656 INFO :: Binance Websocket: {"u":18790914162,"s":"BTCUSDT","b":"39590.41000000","B":"2.08454000","a":"39590.42000000","A":"1.99151000"}
 
+2022-04-28 21:42:42,327 INFO :: Binances Futures Client successfully initialized
+2022-04-28 21:42:43,925 INFO :: Binance Websocket connection opened
+2022-04-28 21:43:28,205 INFO :: Binances Futures Client successfully initialized
+2022-04-28 21:43:29,729 INFO :: Binance Websocket connection opened
+2022-04-28 21:46:35,851 INFO :: Binances Futures Client successfully initialized
+2022-04-28 21:46:37,643 INFO :: Binance Websocket connection opened
