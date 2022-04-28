@@ -1,3 +1,4 @@
+from concurrent.futures import thread
 import logging
 import re
 import requests
@@ -5,18 +6,23 @@ import pprint
 import time
 import hmac
 import hashlib
-from urllib.parse import urlencode
+from urllib.parse import urlencode  # parsing to url query
+import websocket
+import threading 
+import json 
 
 logger = logging.getLogger()
 
-# streams url "wss://fstream.binance.com" 
+# streams url 
 
 class BinanceFutures:
 	def __init__(self, public_key, secret_key, testnet):  #self is a class constructor to initialise self when called and testnet whic api to use
 		if testnet: 
 			self.base_url = "https://testnet.binancefuture.com"
+			self.wss_url = "wss://stream.binance.com/ws" 
 		else: 
 			self.base_url = "https://fapi.binance.com"
+			self.wss_url = "wss://fstream.binance.com/ws" 
 
 		#communication identity vars
 		self.public_key = public_key
@@ -24,6 +30,12 @@ class BinanceFutures:
 		self.headers = {'X-MBX-APIKEY': self.public_key}
 
 		self.prices = dict()
+		self.id = 1
+		self.ws  = None
+
+		#as this is a websocket function and it runs continuosly it requires its own thread to run in parallel
+		t = threading.Thread(target=self.start_ws)
+		t.start()
 
 		logger.info("Binances Futures Client successfully initialized")
 
@@ -153,3 +165,54 @@ class BinanceFutures:
 
 		order_status = self.make_request("GET", endpoint, data)
 		return order_status
+
+	def start_ws(self):
+		self.ws = websocket.WebSocketApp(self.wss_url, on_open=self.on_open, on_close=self.on_close, on_error=self.on_error, on_message=self.on_message)
+		self.ws.run_forever()
+		return
+
+	def on_open(self, ws):
+		logger.info("Binance Websocket connection opened")
+		self.subscribe_channel("BTCUSDT")
+
+	def on_close(self, ws):
+		logger.warning("Binance Websocket connection closed")
+
+	def on_error(self, ws, msg):
+		logger.warning("Binance Websocket connection: %s", msg)
+
+	def on_message(self, ws, msg):
+	
+		data = json.loads(msg)
+
+		if "e" in data is not None: 
+			if data['e'] == "bookTicker":
+				symbol = data['s']
+				
+				if symbol not in self.prices: 
+					self.prices[symbol] = {'bid': float(data['b']), 'ask': float(data['a'])}
+			else: 
+				self.prices[symbol]['bid'] = float(data['b'])
+				self.prices[symbol]['ask'] = float(data['a'])
+
+			print(self.prices[symbol])
+
+	def subscribe_channel(self, symbol): 
+		data = dict()
+		data['method'] = 'SUBSCRIBE'
+		data['params'] = []
+		# bookTicker give price updates
+		data['params'].append(symbol.lower() + "@bookTicker")
+		data['id'] = self.id 
+		
+		"""
+		data example
+		2022-04-28 16:37:01,656 INFO :: Binance Websocket: {"u":18790914162,"s":"BTCUSDT","b":"39590.41000000","B":"2.08454000","a":"39590.42000000","A":"1.99151000"}
+		"""
+		self.ws.send(json.dumps(data))
+		self.id += 1 
+
+
+	
+	
+		

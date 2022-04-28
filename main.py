@@ -52,10 +52,10 @@ if __name__ == '__main__':
     print(os.getenv('PUBLIC_KEY'))
 
     binance = BinanceFutures(os.getenv('PUBLIC_KEY'), os.getenv('SECRET_KEY'),  True)
-    print(binance.get_balances())
-    print(binance.place_order("BTCUSDT", "BUY", 0.01, "LIMIT", 20000, "GTC")) # good till cancelled
-    print(binance.get_order_status("BTCUSDT", 3036361555))
-    print(binance.cancel_order("BTCUSDT", 3036361555))
+    # print(binance.get_balances())
+    # print(binance.place_order("BTCUSDT", "BUY", 0.01, "LIMIT", 20000, "GTC")) # good till cancelled
+    # print(binance.get_order_status("BTCUSDT", 3036361555))
+    # print(binance.cancel_order("BTCUSDT", 3036361555))
     
 
     root = tk.Tk()
