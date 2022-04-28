@@ -25,50 +25,50 @@ class BinanceFutures:
     def __init__(self, public_key: str, secret_key: str,
                  testnet: bool):  # self is a class constructor to initialise self when called and testnet whic api to use
         if testnet:
-            self.base_url = "https://testnet.binancefuture.com"
-            self.wss_url = "wss://stream.binance.com/ws"
+            self._base_url = "https://testnet.binancefuture.com"
+            self._wss_url = "wss://stream.binance.com/ws"
         else:
-            self.base_url = "https://fapi.binance.com"
-            self.wss_url = "wss://fstream.binance.com/ws"
+            self._base_url = "https://fapi.binance.com"
+            self._wss_url = "wss://fstream.binance.com/ws"
 
         # communication identity vars
-        self.public_key = public_key
-        self.secret_key = secret_key
-        self.headers = {'X-MBX-APIKEY': self.public_key}
+        self._public_key = public_key
+        self._secret_key = secret_key
+        self._headers = {'X-MBX-APIKEY': self._public_key}
 
         self.contracts = self.get_contracts()
         self.balances = self.get_balances()
         self.prices = dict()
-        self.ws_id = 1
-        self.ws = None
+        self._ws_id = 1
+        self._ws = None
 
         # as this is a websocket function and it runs continuosly it requires its own thread to run in parallel
-        t = threading.Thread(target=self.start_ws)
+        t = threading.Thread(target=self._start_ws)
         t.start()
 
         logger.info("Binances Futures Client successfully initialized")
 
-    def generate_signature(self, data: typing.Dict) -> str:
+    def _generate_signature(self, data: typing.Dict) -> str:
 
-        return hmac.new(self.secret_key.encode(), urlencode(data).encode(),
+        return hmac.new(self._secret_key.encode(), urlencode(data).encode(),
                         hashlib.sha256).hexdigest()  # byte type is created with .encode()
 
-    def make_request(self, method: str, endpoint: str, data: typing.Dict):
+    def _make_request(self, method: str, endpoint: str, data: typing.Dict):
         if method == "GET":
             try:
-                res = requests.get(self.base_url + endpoint, params=data, headers=self.headers)
+                res = requests.get(self._base_url + endpoint, params=data, headers=self._headers)
             except Exception as e:
                 logger.error("Connection error while making %s request to %s: %s", method, endpoint, e)
                 return None
         elif method == "POST":
             try:
-                res = requests.post(self.base_url + endpoint, params=data, headers=self.headers)
+                res = requests.post(self._base_url + endpoint, params=data, headers=self._headers)
             except Exception as e:
                 logger.error("Connection error while making %s request to %s: %s", method, endpoint, e)
                 return None
         elif method == "DELETE":
             try:
-                res = requests.delete(self.base_url + endpoint, params=data, headers=self.headers)
+                res = requests.delete(self._base_url + endpoint, params=data, headers=self._headers)
             except Exception as e:
                 logger.error("Connection error while making %s request to %s: %s", method, endpoint, e)
                 return None
@@ -83,7 +83,7 @@ class BinanceFutures:
             return None
 
     def get_contracts(self) -> typing.Dict[str, Contract]:
-        exchange_info = self.make_request("GET", "/fapi/v1/exchangeInfo", None)
+        exchange_info = self._make_request("GET", "/fapi/v1/exchangeInfo", None)
 
         contracts = dict()
 
@@ -100,7 +100,7 @@ class BinanceFutures:
         data['interval'] = interval
         data['limit'] = 1000
 
-        raw_candles = self.make_request("GET", endpoint, data)
+        raw_candles = self._make_request("GET", endpoint, data)
 
         candles = []  # will be list of lists
 
@@ -118,7 +118,7 @@ class BinanceFutures:
         endpoint = "/fapi/v1/ticker/bookTicker"
         data = dict()
         data['symbol'] = contract.symbol
-        ob_data = self.make_request("GET", endpoint, data)
+        ob_data = self._make_request("GET", endpoint, data)
 
         if ob_data is not None:
             if contract.symbol not in self.prices:
@@ -132,12 +132,12 @@ class BinanceFutures:
     def get_balances(self) -> typing.Dict[str, Balance]:
         data = dict()
         data['timestamp'] = int(time.time() * 1000)  # API requires ms as int
-        data['signature'] = self.generate_signature(data)
+        data['signature'] = self._generate_signature(data)
         endpoint = "/fapi/v1/account"
 
         balances = dict()
 
-        account_data = self.make_request("GET", endpoint, data)
+        account_data = self._make_request("GET", endpoint, data)
 
         if account_data is not None:
             for asset in account_data['assets']:
@@ -156,10 +156,10 @@ class BinanceFutures:
         if tif is not None:
             data['timeInForce'] = tif
         data['timestamp'] = int(time.time() * 1000)
-        data['signature'] = self.generate_signature(data)
+        data['signature'] = self._generate_signature(data)
 
         endpoint = '/fapi/v1/order'
-        order_status = self.make_request("POST", endpoint, data)
+        order_status = self._make_request("POST", endpoint, data)
 
         if order_status is not None:
             order_status = OrderStatus(order_status)
@@ -171,10 +171,10 @@ class BinanceFutures:
         data['orderId'] = order_id
         data['symbol'] = contract.symbol
         data['timestamp'] = int(time.time() * 1000)
-        data['signature'] = self.generate_signature(data)
+        data['signature'] = self._generate_signature(data)
 
         endpoint = '/fapi/v1/order'
-        order_status = self.make_request("DELETE", endpoint, data)
+        order_status = self._make_request("DELETE", endpoint, data)
 
         if order_status is not None:
             order_status = OrderStatus(order_status)
@@ -186,38 +186,38 @@ class BinanceFutures:
         data['symbol'] = contract.symbol
         data['orderId'] = order_id
         data['timestamp'] = int(time.time() * 1000)
-        data['signature'] = self.generate_signature(data)
+        data['signature'] = self._generate_signature(data)
 
         endpoint = "/fapi/v1/order"
 
-        order_status = self.make_request("GET", endpoint, data)
+        order_status = self._make_request("GET", endpoint, data)
 
         if order_status is not None:
             order_status = OrderStatus(order_status)
 
         return order_status
 
-    def start_ws(self):
-        self.ws = websocket.WebSocketApp(self.wss_url, on_open=self.on_open, on_close=self.on_close,
-                                         on_error=self.on_error, on_message=self.on_message)
+    def _start_ws(self):
+        self._ws = websocket.WebSocketApp(self._wss_url, on_open=self._on_open, on_close=self._on_close,
+                                          on_error=self._on_error, on_message=self._on_message)
         while True:
             try:
-                self.ws.run_forever()
+                self._ws.run_forever()
             except Exception as e:
                 logger.error("Websocket error in run_forever() method: %s", e)
             time.sleep(2) # reconnect every 2sec
 
-    def on_open(self, ws):
+    def _on_open(self, ws):
         logger.info("Binance Websocket connection opened")
-        self.subscribe_channel("BTCUSDT")
+        self.subscribe_channel(self.contracts['BTCUSDT'])
 
-    def on_close(self, ws):
+    def _on_close(self, ws):
         logger.warning("Binance Websocket connection closed")
 
-    def on_error(self, ws, msg: str):
+    def _on_error(self, ws, msg: str):
         logger.warning("Binance Websocket connection: %s", msg)
 
-    def on_message(self, ws, msg: str):
+    def _on_message(self, ws, msg: str):
 
         data = json.loads(msg)
 
@@ -237,16 +237,16 @@ class BinanceFutures:
         data['params'] = []
         # bookTicker give price updates
         data['params'].append(contract.symbol.lower() + "@bookTicker")
-        data['id'] = self.ws_id
+        data['id'] = self._ws_id
 
         """
             data example
             2022-04-28 16:37:01,656 INFO :: Binance Websocket: {"u":18790914162,"s":"BTCUSDT","b":"39590.41000000","B":"2.08454000","a":"39590.42000000","A":"1.99151000"}
 		"""
         try:
-            self.ws.send(json.dumps(data))
+            self._ws.send(json.dumps(data))
         except Exception as e:
             logger.error("Websocket error while subscribing to %s: %s", contract.symbol, e)
-        self.ws_id += 1
+        self._ws_id += 1
 
 
