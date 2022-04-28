@@ -31,7 +31,7 @@ def place_currency_pair_labels(contracts, rows_per_column):
     i = 0 #row 
     j = 0 #column 
 
-    calibri_font= ("Calibri", 11, "normal")
+    calibri_font = ("Calibri", 11, "normal")
 
     for contract in contracts: 
         label_widget = tk.Label(root, text=contract, bg='gray12', fg='SteelBlue1', width=13, font=calibri_font)
