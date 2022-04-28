@@ -1,38 +1,44 @@
 import logging
+import re
 import requests
 import pprint
+import time
+import hmac
+import hashlib
+from urllib.parse import urlencode
 
 logger = logging.getLogger()
 
-
-
-"wss://fstream.binance.com" 
-
-
-# gets crypto currency pairs / contracts
-# def get_contracts(): 
-#   	response_object = requests.get("https://fapi.binance.com/fapi/v1/exchangeInfo")
-#   	contracts = []
-#   	for contract in response_object.json()['symbols']:
-#     	contracts.append(contract['pair'])
-  
-#   	return contracts
-
+# streams url "wss://fstream.binance.com" 
 
 class BinanceFutures:
-	def __init__(self, testnet):  #self is a class constructor to initialise self when called and testnet whic api to use
+	def __init__(self, public_key, secret_key, testnet):  #self is a class constructor to initialise self when called and testnet whic api to use
 		if testnet: 
 			self.base_url = "https://testnet.binancefuture.com"
 		else: 
 			self.base_url = "https://fapi.binance.com"
 
+		#communication identity vars
+		self.public_key = public_key
+		self.secret_key = secret_key
+		self.headers = {'X-MBX-APIKEY': self.public_key}
+
 		self.prices = dict()
 
 		logger.info("Binances Futures Client successfully initialized")
 
+	def generate_signature(self, data): 
+
+		return hmac.new(self.secret_key.encode(), urlencode(data).encode(), hashlib.sha256).hexdigest()  #byte type is created with .encode()
+
+
 	def make_request(self, method, endpoint, data):
 		if method == "GET": 
-			res = requests.get(self.base_url + endpoint, params=data)
+			res = requests.get(self.base_url + endpoint, params=data, headers=self.headers)
+		elif method == "POST": 
+			res = requests.post(self.base_url + endpoint, params=data, headers=self.headers)
+		elif method == "DELETE": 
+			res = requests.delete(self.base_url + endpoint, params=data, headers=self.headers)
 		else: 
 			raise ValueError()
 
@@ -85,7 +91,65 @@ class BinanceFutures:
 			if symbol not in self.prices: 
 				self.prices[symbol] = {'bid': float(ob_data['bidPrice']), 'ask': float(ob_data['askPrice'])}
 			else: 
-				seld.prices[symbol]['bid'] = float(ob_data['bidPrice'])
-				seld.prices[symbol]['ask'] = float(ob_data['askPrice'])
+				self.prices[symbol]['bid'] = float(ob_data['bidPrice'])
+				self.prices[symbol]['ask'] = float(ob_data['askPrice'])
 
 		return self.prices[symbol]
+
+	def get_balances(self): 
+		data = dict()
+		data['timestamp'] = int(time.time() * 1000)  #API requires ms as int
+		data['signature']  = self.generate_signature(data)
+		endpoint = "/fapi/v1/account"
+		
+		balances = dict()
+
+		account_data = self.make_request("GET", endpoint, data)
+
+		if account_data is not None: 
+			for asset in account_data['assets']:
+				balances[asset['asset']] = asset
+		
+		return balances
+	
+	def place_order(self, symbol, side, quantity, order_type, price=None, tif=None): 
+		data = dict()
+		data['symbol'] = symbol
+		data['side'] = side 
+		data['quantity'] = quantity
+		data['type'] = order_type
+		if price is not None: 
+			data['price'] = price
+		if tif is not None: 
+			data['timeInForce'] = tif 
+		data['timestamp'] = int(time.time() * 1000)
+		data['signature'] = self.generate_signature(data)
+
+		endpoint = '/fapi/v1/order'
+		order_status = self.make_request("POST", endpoint, data)
+		
+		return order_status
+
+	def cancel_order(self, symbol, order_id): 
+		data = dict()
+		data['orderId'] = order_id
+		data['symbol'] = symbol
+		data['timestamp'] = int(time.time() * 1000)
+		data['signature'] = self.generate_signature(data)
+
+		endpoint = '/fapi/v1/order'
+		order_status = self.make_request("DELETE", endpoint, data)
+
+		return order_status
+
+	def get_order_status(self, symbol, order_id): 
+		data = dict()
+		data['symbol'] = symbol 
+		data['orderId'] = order_id
+		data['timestamp'] = int(time.time() * 1000)
+		data['signature'] = self.generate_signature(data)
+
+		endpoint = "/fapi/v1/order"
+
+		order_status = self.make_request("GET", endpoint, data)
+		return order_status

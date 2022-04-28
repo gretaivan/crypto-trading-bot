@@ -12,3 +12,32 @@
 2022-04-26 19:25:27,413 INFO :: Binances Futures Client successfully initialized
 2022-04-26 19:26:47,399 INFO :: Binances Futures Client successfully initialized
 2022-04-26 19:28:39,849 INFO :: Binances Futures Client successfully initialized
+2022-04-28 12:31:44,116 INFO :: Binances Futures Client successfully initialized
+2022-04-28 12:50:14,063 INFO :: Binances Futures Client successfully initialized
+2022-04-28 12:50:15,949 ERROR :: Error while making POST request to /fapi/v1/order : {'code': -1102, 'msg': "Mandatory parameter 'timeInForce' was not sent, was empty/null, or malformed."} (error code 400)
+2022-04-28 12:51:34,106 INFO :: Binances Futures Client successfully initialized
+2022-04-28 12:52:52,139 INFO :: Binances Futures Client successfully initialized
+2022-04-28 12:52:54,503 ERROR :: Error while making GET request to /fapi/v1/order : {'code': -1021, 'msg': 'Timestamp for this request is outside of the recvWindow.'} (error code 400)
+2022-04-28 12:59:43,123 INFO :: Binances Futures Client successfully initialized
+2022-04-28 12:59:45,694 ERROR :: Error while making GET request to /fapi/v1/order : {'code': -1021, 'msg': 'Timestamp for this request is outside of the recvWindow.'} (error code 400)
+2022-04-28 13:04:20,117 INFO :: Binances Futures Client successfully initialized
+2022-04-28 13:04:22,890 ERROR :: Error while making GET request to /fapi/v1/order : {'code': -1021, 'msg': 'Timestamp for this request is outside of the recvWindow.'} (error code 400)
+2022-04-28 13:05:38,623 INFO :: Binances Futures Client successfully initialized
+2022-04-28 13:06:42,466 INFO :: Binances Futures Client successfully initialized
+2022-04-28 15:46:38,764 INFO :: Binances Futures Client successfully initialized
+2022-04-28 15:46:39,770 ERROR :: Error while making GET request to /fapi/v1/account : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:46:40,213 ERROR :: Error while making POST request to /fapi/v1/order : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:46:41,086 ERROR :: Error while making GET request to /fapi/v1/order : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:46:41,575 ERROR :: Error while making DELETE request to /fapi/v1/order : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:47:03,317 INFO :: Binances Futures Client successfully initialized
+2022-04-28 15:47:04,243 ERROR :: Error while making GET request to /fapi/v1/account : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:47:05,131 ERROR :: Error while making POST request to /fapi/v1/order : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:47:05,995 ERROR :: Error while making GET request to /fapi/v1/order : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:47:06,459 ERROR :: Error while making DELETE request to /fapi/v1/order : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:47:40,906 INFO :: Binances Futures Client successfully initialized
+2022-04-28 15:47:41,833 ERROR :: Error while making GET request to /fapi/v1/account : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:47:42,722 ERROR :: Error while making POST request to /fapi/v1/order : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:47:43,151 ERROR :: Error while making GET request to /fapi/v1/order : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:47:44,070 ERROR :: Error while making DELETE request to /fapi/v1/order : {'code': -2015, 'msg': 'Invalid API-key, IP, or permissions for action, request ip: 151.228.199.44'} (error code 401)
+2022-04-28 15:48:42,396 INFO :: Binances Futures Client successfully initialized
+2022-04-28 15:48:45,212 ERROR :: Error while making DELETE request to /fapi/v1/order : {'code': -2011, 'msg': 'Unknown order sent.'} (error code 400)
