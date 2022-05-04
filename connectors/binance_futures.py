@@ -15,8 +15,7 @@ logger = logging.getLogger()
 
 
 class BinanceFutures:
-    def __init__(self, public_key: str, secret_key: str,
-                 testnet: bool):  # self is a class constructor to initialise self when called and testnet which api to use
+    def __init__(self, public_key: str, secret_key: str, testnet: bool):  # self is a class constructor to initialise self when called and testnet which api to use
         if testnet:
             self._base_url = "https://testnet.binancefuture.com"
             self._wss_url = "wss://stream.binance.com/ws"
