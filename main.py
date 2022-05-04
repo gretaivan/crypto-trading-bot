@@ -3,7 +3,7 @@ from numpy import load
 import pandas as pd
 import tkinter as tk
 import logging
-from connectors.bitmex import get_contracts as get_bitmex_contracts
+from connectors.bitmex import BitmexFutures
 from connectors.binance_futures import BinanceFutures
 import os
 from dotenv import load_dotenv
@@ -47,16 +47,15 @@ def place_currency_pair_labels(contracts, rows_per_column):
 
 if __name__ == '__main__':
 
-    bitmex_contracts = get_bitmex_contracts()
- 
-    print(os.getenv('PUBLIC_KEY'))
+    #print(os.getenv('PUBLIC_KEY'))
 
-    binance = BinanceFutures(os.getenv('PUBLIC_KEY'), os.getenv('SECRET_KEY'),  True)
+    #binance = BinanceFutures(os.getenv('PUBLIC_KEY'), os.getenv('SECRET_KEY'),  True)
     # print(binance.get_balances())
     # print(binance.place_order("BTCUSDT", "BUY", 0.01, "LIMIT", 20000, "GTC")) # good till cancelled
     # print(binance.get_order_status("BTCUSDT", 3036361555))
     # print(binance.cancel_order("BTCUSDT", 3036361555))
-
+    bitmex = BitmexFutures(True)
+    bitmex_contracts = bitmex.get_contracts()
     # streams of data
     #candles = BinanceFutures.get_historical_candles()
     
