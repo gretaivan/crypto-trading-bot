@@ -48,20 +48,27 @@ class BitmexFutures:
 
     return contracts
 
-#bitmex = BitmexClient(..., ..., ...)
+  def get_historical_candles(self):
 
+    return
 
+  def get_balances(self, symbol):
+    endpoint = '/settlement'
+    data = dict()
+    data['symbol'] = symbol
+    data['count'] = 1000
+
+    return
 """
 
 · place_order()
 
-· get_balances()
 
 · get_order_status()
 
 · cancel_order()
 
-· get_historical_candles()
+
 
 
 
